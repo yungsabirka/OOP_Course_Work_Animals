@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Course_Work.MainPage">
+
+    <ScrollView>
+        <VerticalStackLayout
+            Background="white">
+            <HorizontalStackLayout
+                Margin="0, 60, 0, 0"
+                Spacing="320"
+                VerticalOptions="End"
+                HorizontalOptions="Center">
+                <Image
+                Source="tiger_image.png"
+                SemanticProperties.Description="Cute dot net bot waving hi to you!"
+                HorizontalOptions="Center" 
+                WidthRequest="300"
+                />
+                <Image
+                Source="panda.png"
+                SemanticProperties.Description="Cute dot net bot waving hi to you!"
+                HeightRequest="250"
+                HorizontalOptions="Center"
+                WidthRequest="170"/>
+            </HorizontalStackLayout>
+            <HorizontalStackLayout
+                HorizontalOptions="Center"
+                Margin="60">
+                <Button
+                x:Name="StartGameButton"
+                Clicked="GoToGamePage"
+                FontSize="24"
+                BackgroundColor="black"
+                Text="Start"
+                SemanticProperties.Hint="Start the game"
+                HorizontalOptions="Center" 
+                WidthRequest="1000"/>
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
