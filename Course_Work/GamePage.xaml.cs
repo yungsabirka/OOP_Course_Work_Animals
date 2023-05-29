@@ -9,7 +9,7 @@ public partial class GamePage : ContentPage
         GameModel gameModel = new();
         Simulation simulation = new(gameModel.map);
 
-        var visualisation = new Visualisation(gameModel, this);
+        var visualisation = new Visualisation(gameModel.map, this);
         simulation.Start();
         /*var imageArray = new Image[32,32];
         for(int i = 0; i < 32; i++)

@@ -28,7 +28,7 @@ class Simulation
         {
             Update.Invoke();
             Move.Invoke(_map);
-            Generate.Invoke();
+            /*Generate.Invoke();*/
             Thread.Sleep(_delay);
             
             /* Console.Clear();*/

@@ -10,50 +10,51 @@ namespace OOPLAB
     class Visualisation
     {
 
-        public Visualisation(GameModel gameModel, GamePage gamePage)
+        public Visualisation(List<GameObject>[,] gameModel, GamePage gamePage)
         {
             _gamePage = gamePage;
-            _gameModel = gameModel;
+            _gameModelMap = gameModel;
             Simulation.Update += Test;
         }
-        private GameModel _gameModel;
+        private List<GameObject>[,] _gameModelMap;
         private GamePage _gamePage;
         private List<GameObject>[,] _priorityMap;
         private Image[,] _imageArray;
-        public List<GameObject>[,] VisualisationMap(List<GameObject>[,] map)
+        public List<GameObject>[,] VisualisationMap()
         {
-            for (int i = 0; i < map.GetLength(0); i++)
+            for (int i = 0; i < _gameModelMap.GetLength(0); i++)
             {
-                for (int j = 0; j < map.GetLength(1); j++)
+                for (int j = 0; j < _gameModelMap.GetLength(1); j++)
                 {
-                    _priorityMap[i, j] = null;
-                    _priorityMap[i,j].Add(EasyVisualisation(map[i,j]));
+                    _priorityMap[i, j] = new List<GameObject>();
+                    if (_gameModelMap[i,j] != null)
+                        _priorityMap[i, j].Add(EasyVisualisation(_gameModelMap[i,j]));
                 }
             }
             return _priorityMap;
         }
 
-        private GameObject EasyVisualisation(List<GameObject> cell)
+        private static GameObject EasyVisualisation(List<GameObject> cell)
         {
+            if (cell == null)
+                return null;
             var priorityQueue = new PriorityQueue<GameObject, int>();
             foreach (var item in cell)
                 priorityQueue.Enqueue(item, item.Priority);
 
-            if (priorityQueue.Count > 0)
-                return priorityQueue.Dequeue();
-            else
-                return null;
+            return priorityQueue.Dequeue();
         }
 
         public void Test()
         {
+            var priorityMap = VisualisationMap();
             var _imageArray = new Image[32, 32];
             for (int i = 0; i < 32; i++)
             {
                 for (int j = 0; j < 32; j++)
                 {
-                    if (_gameModel.map[i, j].Count != 0)
-                        _imageArray[i, j] = new Image { Source = _gameModel.map[i, j][0].SourceImage };
+                    if (priorityMap[i, j].Count != 0)
+                        _imageArray[i, j] = new Image { Source = priorityMap[i, j][0].SourceImage };
                     else
                         _imageArray[i, j] = new Image { Source = "square.png" };
                 }
