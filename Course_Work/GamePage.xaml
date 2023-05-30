@@ -3,5 +3,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Course_Work.GamePage"
              Title="GamePage">
-
+    <ScrollView
+        Background="white">
+        <Button
+                x:Name="Start"
+                Clicked="StartGame"
+                FontSize="24"
+                BackgroundColor="black"
+                Text="Start"
+                SemanticProperties.Hint="Start the game"
+                HorizontalOptions="Center" 
+                WidthRequest="200"/>
+        
+    </ScrollView>
 </ContentPage>

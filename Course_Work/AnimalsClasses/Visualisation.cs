@@ -1,85 +1,99 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Course_Work;
+﻿using Course_Work;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace OOPLAB
 {
     class Visualisation
     {
+        private string[,] _priorityMap { get; set; }
 
-        public Visualisation(List<GameObject>[,] gameModel, GamePage gamePage)
+        public Visualisation(List<GameObject>[,] map, GamePage gamePage)
         {
             _gamePage = gamePage;
-            _gameModelMap = gameModel;
-            Simulation.Update += Test;
+            _map = map;
+            _priorityMap = new string[map.GetLength(0), map.GetLength(1)];
+            UpdatePriorityMap();
+           // Simulation.Visualise += AddImagesToPage;
         }
-        private List<GameObject>[,] _gameModelMap;
-        private GamePage _gamePage;
-        private List<GameObject>[,] _priorityMap;
-        private Image[,] _imageArray;
-        public List<GameObject>[,] VisualisationMap()
+
+        private readonly List<GameObject>[,] _map;
+        private readonly GamePage _gamePage;
+
+        /*public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged([CallerMemberName] string prop = "")
         {
-            for (int i = 0; i < _gameModelMap.GetLength(0); i++)
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
+        }*/
+
+        private void UpdatePriorityMap()
+        {
+            for (int i = 0; i < _map.GetLength(0); i++)
             {
-                for (int j = 0; j < _gameModelMap.GetLength(1); j++)
+                for (int j = 0; j < _map.GetLength(1); j++)
                 {
-                    _priorityMap[i, j] = new List<GameObject>();
-                    if (_gameModelMap[i,j] != null)
-                        _priorityMap[i, j].Add(EasyVisualisation(_gameModelMap[i,j]));
-                }
-            }
-            return _priorityMap;
-        }
+                    if (_map[i, j].Count > 0)
+                    {
+                        var priorityQueue = new PriorityQueue<GameObject, int>();
+                        foreach (var item in _map[i, j])
+                            priorityQueue.Enqueue(item, item.Priority);
 
-        private static GameObject EasyVisualisation(List<GameObject> cell)
-        {
-            if (cell == null)
-                return null;
-            var priorityQueue = new PriorityQueue<GameObject, int>();
-            foreach (var item in cell)
-                priorityQueue.Enqueue(item, item.Priority);
-
-            return priorityQueue.Dequeue();
-        }
-
-        public void Test()
-        {
-            var priorityMap = VisualisationMap();
-            var _imageArray = new Image[32, 32];
-            for (int i = 0; i < 32; i++)
-            {
-                for (int j = 0; j < 32; j++)
-                {
-                    if (priorityMap[i, j].Count != 0)
-                        _imageArray[i, j] = new Image { Source = priorityMap[i, j][0].SourceImage };
+                        _priorityMap[i, j] = priorityQueue.Dequeue().SourceImage;
+                    }
                     else
-                        _imageArray[i, j] = new Image { Source = "square.png" };
+                    {
+                        _priorityMap[i, j] = "square.png";
+                    }
                 }
             }
-
-            var horizontalStackLayout = new HorizontalStackLayout
-            {
-                BackgroundColor = new Color(255, 255, 255),
-                HorizontalOptions = LayoutOptions.Center
-            };
-            for (int i = 0; i < _imageArray.GetLength(0); i++)
-            {
-                var vertivalStackLayout = new VerticalStackLayout();
-                for (int j = 0; j < _imageArray.GetLength(1); j++)
-                {
-                    var image = _imageArray[i, j];
-
-                    image.WidthRequest = 25; // Установите желаемую ширину
-                    image.HeightRequest = 25; // Установите желаемую высоту
-
-                    vertivalStackLayout.Children.Add(image);
-                }
-                horizontalStackLayout.Children.Add(vertivalStackLayout);
-            }
-            _gamePage.Content = horizontalStackLayout;
         }
+
+        public void AddImagesToPage()
+        {
+                UpdatePriorityMap();
+                var horisontalStackLayout = new StackLayout
+                {
+                    Orientation = StackOrientation.Horizontal,
+                    BackgroundColor = new Color(255, 255, 255),
+                    HorizontalOptions = LayoutOptions.Center,
+                    BindingContext = '.'
+                };
+                for (int i = 0; i < _priorityMap.GetLength(0); i++)
+                {
+                    var verticalStackLayout = new StackLayout
+                    {
+                        Orientation = StackOrientation.Vertical
+                    };
+                    for (int j = 0; j < _priorityMap.GetLength(1); j++)
+                    {
+                        var image = new Image
+                        {
+                            HeightRequest = 25,
+                            WidthRequest = 25,
+                            Source = _priorityMap[i, j]
+                            //BindingContext = _priorityMap[i, j]
+                        };
+                    //image.SetBinding(Image.SourceProperty, new Binding("."));
+                    verticalStackLayout.Children.Add(image);
+                    }
+                    horisontalStackLayout.Children.Add(verticalStackLayout);
+                }
+                    _gamePage.Content = horisontalStackLayout;
+
+            //await GenerateImageArrayAsync();
+        }
+        /*[Obsolete]
+        private async Task GenerateImageArrayAsync()
+        {
+            while (true)
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    UpdatePriorityMap();
+                    OnPropertyChanged(nameof(_priorityMap));
+                });
+                await Task.Delay(500);
+            }
+        }*/
     }
 }

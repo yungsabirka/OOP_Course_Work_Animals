@@ -7,7 +7,7 @@ class Simulation
 {
     private readonly Statistics _statistics;
     public static event Action? Update;
-    public static event Action? Generate;
+    public static event Func<Task> Visualise;
     public delegate void AnimalsMove(List<GameObject>[,] map);
     public static event AnimalsMove? Move;
     private readonly int _delay;
@@ -17,20 +17,21 @@ class Simulation
     public Simulation(List<GameObject>[,] map)
     {
         _delay = 500;
-        MaxTurns = 200;
+        MaxTurns = 20;
         _statistics = new Statistics(map);
         _map = map;
     }
 
-    public void Start()
+    public void Start(Visualisation visualisation)
     {
         while (_statistics.TurnsCount < MaxTurns)
         {
             Update.Invoke();
             Move.Invoke(_map);
-            /*Generate.Invoke();*/
-            Thread.Sleep(_delay);
             
+            visualisation.AddImagesToPage();
+            Thread.Sleep(_delay);
+
             /* Console.Clear();*/
             _statistics.RecordStatistics();
             /*_statistics.Print();*/

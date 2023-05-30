@@ -1,53 +1,29 @@
-namespace Course_Work;
+using Microsoft.Maui;
+using Microsoft.Maui.Controls;
+using Microsoft.Maui.Controls.Xaml;
 using OOPLAB;
-public partial class GamePage : ContentPage
+using System;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
+
+namespace Course_Work
 {
-	public GamePage()
-	{
-		InitializeComponent();
-
-        GameModel gameModel = new();
-        Simulation simulation = new(gameModel.map);
-
-        var visualisation = new Visualisation(gameModel.map, this);
-        simulation.Start();
-        /*var imageArray = new Image[32,32];
-        for(int i = 0; i < 32; i++)
-        {
-            for(int j = 0; j < 32; j++)
-            {
-                if (gameModel.map[i, j].Count != 0)
-                    imageArray[i, j] = new Image { Source = gameModel.map[i, j][0].SourceImage };
-                else
-                    imageArray[i, j] = new Image { Source = "square.png" };
-            }
-        }
-
-        var horizontalStackLayout = new HorizontalStackLayout
-        {
-            BackgroundColor = new Color(255, 255, 255),
-            HorizontalOptions = LayoutOptions.Center
-        };
-        for (int i = 0; i < imageArray.GetLength(0); i++)
-        {
-            var vertivalStackLayout = new VerticalStackLayout();
-            for (int j = 0; j < imageArray.GetLength(1); j++)
-            {
-                var image = imageArray[i, j];
-
-                image.WidthRequest = 50; // Установите желаемую ширину
-                image.HeightRequest = 50; // Установите желаемую высоту
-
-                vertivalStackLayout.Children.Add(image);
-            }
-            horizontalStackLayout.Children.Add(vertivalStackLayout);
-        }
-        Content = horizontalStackLayout;*/
-
-    }
-
-    private void PrintImages(GameModel gameModel)
+    public partial class GamePage : ContentPage
     {
 
+        public GamePage()
+        {
+            InitializeComponent();
+        }
+
+        private void StartGame(object sender, EventArgs e)
+        {
+            var gameModel = new GameModel();
+            var simulation = new Simulation(gameModel.map);
+            var visualisation = new Visualisation(gameModel.map, this);
+            //visualisation.AddImagesToPage();
+            simulation.Start(visualisation);
+            
+        }
     }
 }
