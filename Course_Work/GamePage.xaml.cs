@@ -16,14 +16,13 @@ namespace Course_Work
             InitializeComponent();
         }
 
-        private void StartGame(object sender, EventArgs e)
+        private async void StartGame(object sender, EventArgs e)
         {
             var gameModel = new GameModel();
             var simulation = new Simulation(gameModel.map);
             var visualisation = new Visualisation(gameModel.map, this);
-            //visualisation.AddImagesToPage();
-            simulation.Start(visualisation);
-            
+            await visualisation.AddImagesToPage();
+            simulation.Start(visualisation);    
         }
     }
 }
