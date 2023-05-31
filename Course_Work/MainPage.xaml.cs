@@ -1,5 +1,5 @@
 ﻿namespace Course_Work;
-
+using Microsoft.Maui.Controls;
 public partial class MainPage : ContentPage
 {
 
@@ -12,5 +12,6 @@ public partial class MainPage : ContentPage
 	{
 		Navigation.PushAsync(new GamePage());
 	}
+
 }
 

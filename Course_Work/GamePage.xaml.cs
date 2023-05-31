@@ -11,15 +11,15 @@ namespace Course_Work
 			InitializeComponent();
 		}
 
-		private void StartGame(object sender, EventArgs e)
+		private async void StartGame(object sender, EventArgs e)
 		{
-			if (_gameModel == null)
+			if (_gameModel is null)
 			{
-				_gameModel = new GameModel(10, 5, 300);
+				_gameModel = new GameModel(100, 15, 300);
 				var simulation = new Simulation(_gameModel.map);
 				var visualisation = new Visualisation(_gameModel.map, this);
 				visualisation.AddImagesToPage();
-				Task.Run(async () =>
+				await Task.Run(async () =>
 				{
 					while (!visualisation.MapReady)
 					{

@@ -28,7 +28,7 @@
                 HorizontalOptions="Center"
                 Margin="60">
                 <Button
-                x:Name="StartGameButton"
+                x:Name="GoToSecondPageBtn"
                 Clicked="GoToGamePage"
                 FontSize="24"
                 BackgroundColor="black"

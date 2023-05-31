@@ -24,7 +24,7 @@
         }
         public ChildPoops(List<GameObject>[,] map)
         {
-            SourceImage = "square.png";
+            SourceImage = "poop.png";
             Priority = 20;
             Saturability = 0;
             Simulation.Update += Decomposition;

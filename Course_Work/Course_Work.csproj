@@ -55,6 +55,7 @@
 	  <None Remove="Resources\Images\fox.svg" />
 	  <None Remove="Resources\Images\grass.svg" />
 	  <None Remove="Resources\Images\panda.svg" />
+	  <None Remove="Resources\Images\poop.svg" />
 	  <None Remove="Resources\Images\rabbit.svg" />
 	  <None Remove="Resources\Images\sheep.svg" />
 	  <None Remove="Resources\Images\square.svg" />

@@ -5,7 +5,69 @@
              Title="GamePage">
     <ScrollView
         Background="white">
-        <Button
+        <VerticalStackLayout
+            HeightRequest="400">
+            <HorizontalStackLayout
+                Spacing="10"
+                Margin="15"
+                Padding="15"
+                HorizontalOptions="Center">
+                <Image
+                    Source="rabbit.png"
+                    WidthRequest="50"
+                    HeightRequest="50">
+                    
+                </Image>
+                <Label
+                    HorizontalTextAlignment="Center"
+                    VerticalTextAlignment="Center"
+                    Text="Enter amount of preys:"
+                    TextColor="black"
+                    FontFamily="Helvetica"
+                    FontSize="22">
+                </Label>
+                <Entry Placeholder = "..." FontFamily="Helvetica"
+                FontSize="22" MaxLength ="3" TextColor="black"/>
+                <Image
+                    Source="bear.png"
+                    WidthRequest="50"
+                    HeightRequest="50">
+                </Image>
+                <Label
+                    HorizontalTextAlignment="Center"
+                    VerticalTextAlignment="Center"
+                    Text="Enter amount of predators:"
+                    TextColor="black"
+                    FontFamily="Helvetica"
+                    FontSize="22">
+                </Label>
+                <Entry Placeholder = "..." FontFamily="Helvetica"
+                FontSize="22" MaxLength ="3" TextColor="black"/>
+               
+            </HorizontalStackLayout>
+            <HorizontalStackLayout
+                Spacing="15"
+                Margin="15"
+                Padding="15"
+                HorizontalOptions="Center">
+                <Image
+                    Source="grass.png"
+                    WidthRequest="50"
+                    HeightRequest="50">
+
+                </Image>
+                <Label
+                    HorizontalTextAlignment="Center"
+                    VerticalTextAlignment="Center"
+                    Text="Enter amount of grass blocks:"
+                    TextColor="black"
+                    FontFamily="Helvetica"
+                    FontSize="22">
+                </Label>
+                <Entry Placeholder = "..." FontFamily="Helvetica"
+                FontSize="22" MaxLength ="3" TextColor="black"/>
+            </HorizontalStackLayout>
+            <Button
                 x:Name="Start"
                 Clicked="StartGame"
                 FontSize="24"
@@ -13,7 +75,9 @@
                 Text="Start"
                 SemanticProperties.Hint="Start the game"
                 HorizontalOptions="Center" 
-                WidthRequest="200"/>
-        
+                WidthRequest="200"
+                />
+        </VerticalStackLayout>
+
     </ScrollView>
 </ContentPage>
