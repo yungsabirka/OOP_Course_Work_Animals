@@ -29,6 +29,7 @@ class Grass : GameObject
     {
         IsGrown = false;
         GrowRate = 0;
+        SourceImage = "bad_grass.png";
     }
 
     private void Grow()
@@ -37,7 +38,10 @@ class Grass : GameObject
         {
             GrowRate++;
             if (GrowRate == 10)
+            {
                 IsGrown = true;
+                SourceImage = "grass.png";
+            }
         }
     }
 }

@@ -48,6 +48,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Images\bad_grass.svg" />
 	  <None Remove="Resources\Images\bear.svg" />
 	  <None Remove="Resources\Images\bull.svg" />
 	  <None Remove="Resources\Images\cow.svg" />
