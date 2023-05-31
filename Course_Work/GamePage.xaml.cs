@@ -5,7 +5,9 @@ namespace Course_Work
 	public partial class GamePage : ContentPage
 	{
 		private GameModel _gameModel;
-
+		private int _grassAmount;
+		private int _preysAmount;
+		private int _predatorsAmount;
 		public GamePage()
 		{
 			InitializeComponent();
@@ -13,21 +15,31 @@ namespace Course_Work
 
 		private async void StartGame(object sender, EventArgs e)
 		{
-			if (_gameModel is null)
+			if(int.TryParse(entryGrass.Text, out _grassAmount) && int.TryParse(entryPredators.Text, out _predatorsAmount) 
+				&& int.TryParse(entryPreys.Text, out _preysAmount))
 			{
-				_gameModel = new GameModel(100, 15, 300);
-				var simulation = new Simulation(_gameModel.map);
-				var visualisation = new Visualisation(_gameModel.map, this);
-				visualisation.AddImagesToPage();
-				await Task.Run(async () =>
+				if (_grassAmount > 0 && _predatorsAmount > 0 && _preysAmount > 0)
 				{
-					while (!visualisation.MapReady)
+
+					if (_gameModel is null)
 					{
-						await Task.Delay(50);
+						_gameModel = new GameModel(_preysAmount, _predatorsAmount, _grassAmount);
+						var simulation = new Simulation(_gameModel.map);
+						var visualisation = new Visualisation(_gameModel.map, this);
+						visualisation.AddImagesToPage();
+						await Task.Run(async () =>
+						{
+							while (!visualisation.MapReady)
+							{
+								await Task.Delay(50);
+							}
+							simulation.Start(visualisation);
+						});
 					}
-					simulation.Start(visualisation);
-				});
-			}
+				}
+            }
+
 		}
+
 	}
 }

@@ -27,7 +27,7 @@
                     FontSize="22">
                 </Label>
                 <Entry Placeholder = "..." FontFamily="Helvetica"
-                FontSize="22" MaxLength ="3" TextColor="black"/>
+                FontSize="22" MaxLength ="3" TextColor="black" x:Name="entryPreys" Keyboard="Numeric"/>
                 <Image
                     Source="bear.png"
                     WidthRequest="50"
@@ -42,7 +42,7 @@
                     FontSize="22">
                 </Label>
                 <Entry Placeholder = "..." FontFamily="Helvetica"
-                FontSize="22" MaxLength ="3" TextColor="black"/>
+                FontSize="22" MaxLength ="3" TextColor="black" x:Name="entryPredators" Keyboard="Numeric"/>
                
             </HorizontalStackLayout>
             <HorizontalStackLayout
@@ -65,7 +65,7 @@
                     FontSize="22">
                 </Label>
                 <Entry Placeholder = "..." FontFamily="Helvetica"
-                FontSize="22" MaxLength ="3" TextColor="black"/>
+                FontSize="22" MaxLength ="3" TextColor="black" x:Name="entryGrass" Keyboard="Numeric"/>
             </HorizontalStackLayout>
             <Button
                 x:Name="Start"

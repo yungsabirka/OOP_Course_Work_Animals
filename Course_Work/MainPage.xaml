@@ -32,7 +32,7 @@
                 Clicked="GoToGamePage"
                 FontSize="24"
                 BackgroundColor="black"
-                Text="Start"
+                Text="Go to game MENU"
                 SemanticProperties.Hint="Start the game"
                 HorizontalOptions="Center" 
                 WidthRequest="1000"/>

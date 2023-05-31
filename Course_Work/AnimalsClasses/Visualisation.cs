@@ -74,6 +74,7 @@ namespace OOPLAB
 		{
 			MainThread.BeginInvokeOnMainThread(async () =>
 			{
+				var scrollView = new ScrollView();
 				var horisontalStackLayout = new StackLayout
 				{
 					Orientation = StackOrientation.Horizontal,
@@ -90,8 +91,8 @@ namespace OOPLAB
 					{
 						var image = new Image
 						{
-							HeightRequest = 25,
-							WidthRequest = 25,
+							HeightRequest = 33,
+							WidthRequest = 33,
 							BindingContext = item
 						};
 						image.SetBinding(Image.SourceProperty, new Binding($"ValueString"));
@@ -99,7 +100,8 @@ namespace OOPLAB
 					}
 					horisontalStackLayout.Children.Add(verticalStackLayout);
 				}
-				_gamePage.Content = horisontalStackLayout;
+				scrollView.Content = horisontalStackLayout;
+				_gamePage.Content = scrollView;
 				MapReady = true;
 			});
 		}
