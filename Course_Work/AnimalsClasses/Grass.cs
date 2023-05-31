@@ -18,7 +18,7 @@ class Grass : GameObject
     public Grass()
     {
         SourceImage = "grass.png";
-        Priority = 5;
+        Priority = 10;
         Saturability = 1;
         IsGrown = true;
         GrowRate = 10;

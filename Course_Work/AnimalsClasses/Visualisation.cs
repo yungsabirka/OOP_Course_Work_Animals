@@ -7,18 +7,33 @@ namespace OOPLAB
 	{
 		private ObservableCollection<ObservableCollection<MyString>> _priorityMap;
 
-		public Visualisation(List<GameObject>[,] gameModel, GamePage gamePage)
-		{
-			_gamePage = gamePage;
-			_gameModelMap = gameModel;
-			_priorityMap = new ObservableCollection<ObservableCollection<MyString>>();
-			InitializePriorityMap();
-		}
-
 		private readonly List<GameObject>[,] _gameModelMap;
 		private readonly GamePage _gamePage;
-
-		private void InitializePriorityMap()
+        object lockCells = new();
+        private bool _mapReady;
+        public bool MapReady
+        {
+            get
+            {
+                return _mapReady;
+            }
+            set
+            {
+                if (_mapReady != value)
+                {
+                    _mapReady = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+        public Visualisation(List<GameObject>[,] gameModel, GamePage gamePage)
+        {
+            _gamePage = gamePage;
+            _gameModelMap = gameModel;
+            _priorityMap = new ObservableCollection<ObservableCollection<MyString>>();
+            InitializePriorityMap();
+        }
+        private void InitializePriorityMap()
 		{
 			lock (lockCells)
 			{
@@ -27,8 +42,8 @@ namespace OOPLAB
 					var row = new ObservableCollection<MyString>();
 					for (int j = 0; j < _gameModelMap.GetLength(1); j++)
 					{
-						if (EasyVisualisation(_gameModelMap[i, j]) != null)
-							row.Add(new MyString(EasyVisualisation(_gameModelMap[i, j])));
+						if (GetPriorityItem(_gameModelMap[i, j]) != null)
+							row.Add(new MyString(GetPriorityItem(_gameModelMap[i, j])));
 						else
 							row.Add(new MyString("square.png"));
 					}
@@ -37,37 +52,22 @@ namespace OOPLAB
 			}
 		}
 
-		object lockCells = new();
 
-		private string EasyVisualisation(List<GameObject> cell)
+		private string GetPriorityItem(List<GameObject> cell)
 		{
-
-			if (cell.Count == 0)
-				return null;
-			var priorityQueue = new PriorityQueue<GameObject, int>();
-			foreach (var item in cell.ToList())
-				priorityQueue.Enqueue(item, item.Priority);
-
-			return priorityQueue.Dequeue().SourceImage;
-
-		}
-
-		private bool _MapReady;
-		public bool MapReady
-		{
-			get
+			lock (lockCells)
 			{
-				return _MapReady;
-			}
-			set
-			{
-				if (_MapReady != value)
-				{
-					_MapReady = value;
-					OnPropertyChanged();
-				}
+				if (cell.Count == 0)
+					return null;
+				var priorityQueue = new PriorityQueue<GameObject, int>();
+				foreach (var item in cell)
+					if (item is not null)
+						priorityQueue.Enqueue(item, item.Priority);
+
+				return priorityQueue.Dequeue().SourceImage;
 			}
 		}
+
 
 
 		public void AddImagesToPage()
@@ -77,7 +77,8 @@ namespace OOPLAB
 				var horisontalStackLayout = new StackLayout
 				{
 					Orientation = StackOrientation.Horizontal,
-					BackgroundColor = new Color(255, 255, 255)
+					BackgroundColor = new Color(255, 255, 255),
+					HorizontalOptions = LayoutOptions.Center
 				};
 				foreach (var row in _priorityMap)
 				{
@@ -103,7 +104,7 @@ namespace OOPLAB
 			});
 		}
 
-		public async Task GenerateImageArrayAsync()
+		public async Task GeneratePriorityMap()
 		{
 			Dispatcher.Dispatch(() =>
 			{
@@ -119,8 +120,8 @@ namespace OOPLAB
 				{
 					for (int j = 0; j < _gameModelMap.GetLength(1); j++)
 					{
-						if (EasyVisualisation(_gameModelMap[i, j]) != null)
-							_priorityMap[i][j].ValueString = EasyVisualisation(_gameModelMap[i, j]);
+						if (GetPriorityItem(_gameModelMap[i, j]) != null)
+							_priorityMap[i][j].ValueString = GetPriorityItem(_gameModelMap[i, j]);
 						else
 							_priorityMap[i][j].ValueString = "square.png";
 					}

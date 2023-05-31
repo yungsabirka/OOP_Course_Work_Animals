@@ -1,6 +1,6 @@
 ﻿namespace OOPLAB
 {
-    abstract class Animals : ObjectWhoCanLookAround
+    public abstract class Animals : ObjectWhoCanLookAround, IFactory
     {
         private int _age;
 
@@ -17,6 +17,7 @@
                     _age = 0;
             }
         }
+        public abstract Animals BorningChild();
         public Animals()
         {
             DeadlyHungerLevel = false;

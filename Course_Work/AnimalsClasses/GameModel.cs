@@ -1,5 +1,5 @@
 ﻿using Point = System.Drawing.Point;
-using Size = System.Drawing.Size;
+using Course_Work;
 
 namespace OOPLAB
 {
@@ -7,87 +7,54 @@ namespace OOPLAB
     {
         public List<GameObject>[,] map;
         private int _mapLenght;
-        public Random RandomValue = new();
-        public GameModel()
+        private Random _random = new();
+        private int _rowNumber;
+        private int _columnNumber;
+        private readonly List<Animals> _predatorsTypeList;
+        private readonly List<Animals> _preysTypeList;
+        public GameModel(int amountOfPreys, int amountOfPredators, int amountOfGrass)
         {
+            _predatorsTypeList = new List<Animals>
+            {
+                new Tiger(), new Wolf(), new Bear(), new Hyena()
+            };
+            _preysTypeList = new List<Animals>
+            {
+                new Bull(), new Cow(), new Rabbit(), new Sheep()
+            };
             _mapLenght = 32;
             map = new List<GameObject>[_mapLenght, _mapLenght];
             for (int i = 0; i < _mapLenght; i++)
                 for (int j = 0; j < _mapLenght; j++)
                     map[i, j] = new List<GameObject>();
-            GenerateGrass(8, 1);
-            GenerateGrass(21, 1);
-            GenerateGrass(8, 16);
-            GenerateGrass(21, 16);
-            GenerateAnimals();
+            GenerateGrass(amountOfGrass);
+            GenerateAnimals(amountOfPreys, _preysTypeList);
+            GenerateAnimals(amountOfPredators, _predatorsTypeList);
         }
-
-        private void GenerateAnimals()
+        private void GenerateAnimals(int amountOfAnimals, List<Animals> animalsTypeList)
         {
-            for (int i = 0; i < _mapLenght; i++)
+            for (int i = 0; i < amountOfAnimals; i++)
             {
-                for (int j = 0; j < _mapLenght; j++)
-                {
-                    int generationChance = RandomValue.Next(1, 41);
-                    if (generationChance < 10)
-                        switch (GenerateRandPrey())
-                        {
-                            case 1:
-                                ActionsOnMap.AddObject(new Point(i, j), map, new Bull());
-                                break;
-                            case 2:
-                                ActionsOnMap.AddObject(new Point(i, j), map, new Cow());
-                                break;
-                            case 3:
-                                ActionsOnMap.AddObject(new Point(i, j), map, new Rabbit());
-                                break;
-                            case 4:
-                                ActionsOnMap.AddObject(new Point(i, j), map, new Sheep());
-                                break;
-                        }
-                    if (generationChance == 11) switch (GenerateRandPredator())
-                        {
-                            case 5:
-                                ActionsOnMap.AddObject(new Point(i, j), map, new Bear());
-                                break;
-                            case 6:
-                                ActionsOnMap.AddObject(new Point(i, j), map, new Hyena());
-                                break;
-                            case 7:
-                                ActionsOnMap.AddObject(new Point(i, j), map, new Tiger());
-                                break;
-                            case 8:
-                                ActionsOnMap.AddObject(new Point(i, j), map, new Wolf());
-                                break;
-                        }
-                }
+                ActionsOnMap.AddObject(new Point(_random.Next(0, map.GetLength(0)), _random.Next(0, map.GetLength(1))),
+                    map, animalsTypeList[_random.Next(0, _predatorsTypeList.Count)].BorningChild());
             }
         }
-        private int GenerateRandPrey()
+        private void GenerateGrass(int amountOfGrass)
         {
-            int generatedValue = RandomValue.Next(1, 5);
-            return generatedValue;
-        }
-        private int GenerateRandPredator()
-        {
-            int generatedValue = RandomValue.Next(4, 9);
-            return generatedValue;
-        }
-        private void GenerateGrass(int x, int y)
-        {
-            int k = 0; bool ex = true;
-            for (int i = y; i < y + 15; i++)
+            for (int i = 0; i < amountOfGrass; i++)
             {
-                for (int j = x - k; j <= x + k; j++)
+                do
                 {
-                    var grass = new Grass();
-                    grass.Coordinate = new Point(j, i);
-                    ActionsOnMap.AddObject(grass.Coordinate, map, grass);
+                    _rowNumber = _random.Next(0, map.GetLength(0));
+                    _columnNumber = _random.Next(0, map.GetLength(1));
                 }
+                while (map[_rowNumber, _columnNumber].Count != 0);
+                var grass = new Grass
+                {
+                    Coordinate = new Point(_rowNumber, _columnNumber)
+                };
+                ActionsOnMap.AddObject(grass.Coordinate, map, grass);
 
-                if (k == 7) ex = false;
-                if (ex) k++;
-                else k--;
             }
         }
 

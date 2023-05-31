@@ -11,13 +11,11 @@ namespace Course_Work
 			InitializeComponent();
 		}
 
-
-
 		private void StartGame(object sender, EventArgs e)
 		{
 			if (_gameModel == null)
 			{
-				_gameModel = new GameModel();
+				_gameModel = new GameModel(5000, 10, 300);
 				var simulation = new Simulation(_gameModel.map);
 				var visualisation = new Visualisation(_gameModel.map, this);
 				visualisation.AddImagesToPage();

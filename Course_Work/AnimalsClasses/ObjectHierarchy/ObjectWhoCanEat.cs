@@ -1,6 +1,6 @@
 ﻿namespace OOPLAB
 {
-    class ObjectWhoCanEat : ObjectWhoHasTarget
+    public class ObjectWhoCanEat : ObjectWhoHasTarget
     {
         private int _satiety = 0;
         public int Satiety

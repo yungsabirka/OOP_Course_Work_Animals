@@ -2,7 +2,7 @@
 
 namespace OOPLAB
 {
-    abstract class GameObject
+    public abstract class GameObject
     {
         public string SourceImage { get; set; }
         public int Saturability { get; set; }

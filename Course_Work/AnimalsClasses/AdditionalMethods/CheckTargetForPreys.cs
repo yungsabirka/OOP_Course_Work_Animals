@@ -4,9 +4,8 @@
     {
         public bool CheckTarget(GameObject target, ObjectWhoCanLookAround animal)
         {
-            if (target is Grass)
+            if (target is Grass grass)
             {
-                var grass = (Grass)target;
                 if (grass.IsGrown)
                 {
                     animal.target = target;

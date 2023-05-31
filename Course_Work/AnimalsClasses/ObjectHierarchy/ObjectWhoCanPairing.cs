@@ -1,6 +1,6 @@
 ﻿namespace OOPLAB
 {
-    abstract class ObjectWhoCanPairing : ObjectWhoCanEat
+    public abstract class ObjectWhoCanPairing : ObjectWhoCanEat
     {
 
         public void PairingAnimals(List<GameObject>[,] map)

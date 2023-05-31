@@ -3,17 +3,18 @@ using Size = System.Drawing.Size;
 
 namespace OOPLAB
 {
-    abstract class ObjectWhoHasTarget : GameObject
+    public abstract class ObjectWhoHasTarget : GameObject
     {
         public GameObject target;
         public int MaxSpeed { get; set; }
         public Point TargetMovement()
         {
-            Point newCoordinate = new Point();
-            Point coordinateDifferences = new Point();
-
-            coordinateDifferences.X = target.Coordinate.X - Coordinate.X;
-            coordinateDifferences.Y = target.Coordinate.Y - Coordinate.Y;
+            Point newCoordinate = new();
+            Point coordinateDifferences = new()
+            {
+                X = target.Coordinate.X - Coordinate.X,
+                Y = target.Coordinate.Y - Coordinate.Y
+            };
 
             if (this is Preys && target is Predators)
             {

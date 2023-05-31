@@ -1,20 +1,17 @@
 ﻿namespace OOPLAB
 {
-    class Cow : Preys, IFactory
+    public class Cow : Preys
     {
         public Cow()
         {
             SourceImage = "cow.png";
-            Priority = 2;
+            Priority = 6;
             MaxSatiety = 3;
             Saturability = 5;
             RadiusOfView = 20;
             MaxSpeed = 2;
             YoungAge = 10;
         }
-        public Animals BorningChild()
-        {
-            return new Cow();
-        }
+        public override Animals BorningChild() => new Cow();
     }
 }

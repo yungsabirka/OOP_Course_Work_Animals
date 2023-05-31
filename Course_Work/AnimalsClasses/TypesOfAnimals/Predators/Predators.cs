@@ -1,6 +1,6 @@
 ﻿namespace OOPLAB
 {
-    abstract class Predators : Animals
+    public abstract class Predators : Animals
     {
         private GameObject EatingTarget(List<GameObject>[,] map)
         {

@@ -1,6 +1,6 @@
 ﻿namespace OOPLAB
 {
-    abstract class Preys : Animals
+    public abstract class Preys : Animals
     {
         public override void Eat(List<GameObject>[,] map)
         {

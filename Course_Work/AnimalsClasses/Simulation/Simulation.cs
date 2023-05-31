@@ -15,7 +15,7 @@ class Simulation
 
     public Simulation(List<GameObject>[,] map)
     {
-        _delay = 500;
+        _delay = 1000;
         MaxTurns = 100;
         _statistics = new Statistics(map);
         _map = map;
@@ -28,7 +28,7 @@ class Simulation
             Update.Invoke();
             Move.Invoke(_map);
             Thread.Sleep(_delay);
-            await visualisation.GenerateImageArrayAsync();
+            await visualisation.GeneratePriorityMap();
             /* Console.Clear();*/
             _statistics.RecordStatistics();
             /*_statistics.Print();*/

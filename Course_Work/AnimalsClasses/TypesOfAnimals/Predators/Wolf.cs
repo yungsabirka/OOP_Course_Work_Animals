@@ -1,19 +1,16 @@
 ﻿namespace OOPLAB
 {
-    class Wolf : Predators, IFactory
+    public class Wolf : Predators
     {
         public Wolf()
         {
             SourceImage = "wolf.png";
-            Priority = 1;
+            Priority = 3;
             MaxSatiety = 24;
             MaxSpeed = 3;
             RadiusOfView = 4;
             YoungAge = 19;
         }
-        public Animals BorningChild()
-        {
-            return new Wolf();
-        }
+        public override Animals BorningChild()=> new Wolf();
     }
 }

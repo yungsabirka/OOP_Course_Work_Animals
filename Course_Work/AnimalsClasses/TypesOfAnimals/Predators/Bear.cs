@@ -1,6 +1,6 @@
 ﻿namespace OOPLAB
 {
-    class Bear : Predators, IFactory
+    public class Bear : Predators
     {
 
         public Bear()
@@ -13,9 +13,6 @@
             YoungAge = 20;
         }
 
-        public Animals BorningChild()
-        {
-            return new Bear();
-        }
+        public override Animals BorningChild() => new Bear();
     }
 }

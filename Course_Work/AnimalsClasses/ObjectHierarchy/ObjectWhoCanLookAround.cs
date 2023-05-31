@@ -2,7 +2,7 @@
 
 namespace OOPLAB
 {
-    abstract class ObjectWhoCanLookAround : ObjectWhoCanPairing
+    public abstract class ObjectWhoCanLookAround : ObjectWhoCanPairing
     {
         public int RadiusOfView { get; set; }
 

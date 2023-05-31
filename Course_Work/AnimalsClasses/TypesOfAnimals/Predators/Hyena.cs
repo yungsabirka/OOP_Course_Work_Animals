@@ -1,19 +1,16 @@
 ﻿namespace OOPLAB
 {
-    class Hyena : Predators, IFactory
+    public class Hyena : Predators
     {
         public Hyena()
         {
             SourceImage = "fox.png";
-            Priority = 1;
+            Priority = 4;
             MaxSatiety = 20;
             MaxSpeed = 3;
             RadiusOfView = 4;
             YoungAge = 18;
         }
-        public Animals BorningChild()
-        {
-            return new Hyena();
-        }
+        public override Animals BorningChild() => new Hyena();
     }
 }
