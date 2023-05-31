@@ -1,28 +1,35 @@
-using Microsoft.Maui;
-using Microsoft.Maui.Controls;
-using Microsoft.Maui.Controls.Xaml;
 using OOPLAB;
-using System;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 
 namespace Course_Work
 {
-    public partial class GamePage : ContentPage
-    {
+	public partial class GamePage : ContentPage
+	{
+		private GameModel _gameModel;
 
-        public GamePage()
-        {
-            InitializeComponent();
-        }
+		public GamePage()
+		{
+			InitializeComponent();
+		}
 
-        private async void StartGame(object sender, EventArgs e)
-        {
-            var gameModel = new GameModel();
-            var simulation = new Simulation(gameModel.map);
-            var visualisation = new Visualisation(gameModel.map, this);
-            await visualisation.AddImagesToPage();
-            simulation.Start(visualisation);    
-        }
-    }
+
+
+		private void StartGame(object sender, EventArgs e)
+		{
+			if (_gameModel == null)
+			{
+				_gameModel = new GameModel();
+				var simulation = new Simulation(_gameModel.map);
+				var visualisation = new Visualisation(_gameModel.map, this);
+				visualisation.AddImagesToPage();
+				Task.Run(async () =>
+				{
+					while (!visualisation.MapReady)
+					{
+						await Task.Delay(50);
+					}
+					simulation.Start(visualisation);
+				});
+			}
+		}
+	}
 }
