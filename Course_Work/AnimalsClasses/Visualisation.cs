@@ -1,114 +1,131 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Course_Work;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using Course_Work;
-using Microsoft.Maui.Controls;
-using Microsoft.Maui.Graphics;
 
 namespace OOPLAB
 {
-    class Visualisation
-    {
-        private ObservableCollection<ObservableCollection<MyString>> _priorityMap;
+	class Visualisation : BindableObject
+	{
+		private ObservableCollection<ObservableCollection<MyString>> _priorityMap;
 
-        public Visualisation(List<GameObject>[,] gameModel, GamePage gamePage)
-        {
-            _gamePage = gamePage;
-            _gameModelMap = gameModel;
-            _priorityMap = new ObservableCollection<ObservableCollection<MyString>>();
-            InitializePriorityMap();
-        }
+		public Visualisation(List<GameObject>[,] gameModel, GamePage gamePage)
+		{
+			_gamePage = gamePage;
+			_gameModelMap = gameModel;
+			_priorityMap = new ObservableCollection<ObservableCollection<MyString>>();
+			InitializePriorityMap();
+		}
 
-        private readonly List<GameObject>[,] _gameModelMap;
-        private readonly GamePage _gamePage;
-        private void InitializePriorityMap()
-        {
-            for (int i = 0; i < _gameModelMap.GetLength(0); i++)
-            {
-                var row = new ObservableCollection<MyString>();
-                for (int j = 0; j < _gameModelMap.GetLength(1); j++)
-                {
-                    if (EasyVisualisation(_gameModelMap[i, j]) != null)
-                        row.Add(new MyString(EasyVisualisation(_gameModelMap[i, j])));
-                    else
-                        row.Add(new MyString("square.png"));
-                }
-                _priorityMap.Add(row);
-            }
-        }
+		private readonly List<GameObject>[,] _gameModelMap;
+		private readonly GamePage _gamePage;
 
-        private static string EasyVisualisation(List<GameObject> cell)
-        {
-            if (cell.Count == 0)
-                return null;
-            var priorityQueue = new PriorityQueue<GameObject, int>();
-            foreach (var item in cell)
-                priorityQueue.Enqueue(item, item.Priority);
+		private void InitializePriorityMap()
+		{
+			lock (lockCells)
+			{
+				for (int i = 0; i < _gameModelMap.GetLength(0); i++)
+				{
+					var row = new ObservableCollection<MyString>();
+					for (int j = 0; j < _gameModelMap.GetLength(1); j++)
+					{
+						if (EasyVisualisation(_gameModelMap[i, j]) != null)
+							row.Add(new MyString(EasyVisualisation(_gameModelMap[i, j])));
+						else
+							row.Add(new MyString("square.png"));
+					}
+					_priorityMap.Add(row);
+				}
+			}
+		}
 
-            return priorityQueue.Dequeue().SourceImage;
-        }
+		object lockCells = new();
 
-        async public Task AddImagesToPage()
-        {
-            var horisontalStackLayout = new StackLayout
-            {
-                Orientation = StackOrientation.Horizontal,
-                BackgroundColor = new Color(255, 255, 255)
-            };
-            foreach (var row in _priorityMap)
-            {
-                var verticalStackLayout = new StackLayout
-                {
-                    Orientation = StackOrientation.Vertical
-                };
-                foreach (var item in row)
-                {
-                    var image = new Image
-                    {
-                        HeightRequest = 25,
-                        WidthRequest = 25,
-                        BindingContext = item.ValueString
-                    };
-                    image.SetBinding(Image.SourceProperty, new Binding($"."));
-                    verticalStackLayout.Children.Add(image);
-                }
-                horisontalStackLayout.Children.Add(verticalStackLayout);
-            }
-            _gamePage.Content = horisontalStackLayout;
+		private string EasyVisualisation(List<GameObject> cell)
+		{
 
-            await GenerateImageArrayAsync();
-        }
+			if (cell.Count == 0)
+				return null;
+			var priorityQueue = new PriorityQueue<GameObject, int>();
+			foreach (var item in cell.ToList())
+				priorityQueue.Enqueue(item, item.Priority);
 
-        public async Task GenerateImageArrayAsync()
-        {
-            //await Task.Run(() => UpdatePriorityMap());
-            /*            while (true)
-                        {*/
-            //await Task.Delay(500);
-            Device.BeginInvokeOnMainThread(() =>
-            {
-                UpdatePriorityMap();
-            });
-            //}
-        }
+			return priorityQueue.Dequeue().SourceImage;
 
-        private void UpdatePriorityMap()
-        {
-            for (int i = 0; i < _gameModelMap.GetLength(0); i++)
-            {
-                for (int j = 0; j < _gameModelMap.GetLength(1); j++)
-                {
-                    if (EasyVisualisation(_gameModelMap[i, j]) != null)
-                        _priorityMap[i][j] = new MyString(EasyVisualisation(_gameModelMap[i, j]));
-                    else
-                        _priorityMap[i][j] = new MyString("square.png");
-                }
-            }
-        }
-    }
+		}
+
+		private bool _MapReady;
+		public bool MapReady
+		{
+			get
+			{
+				return _MapReady;
+			}
+			set
+			{
+				if (_MapReady != value)
+				{
+					_MapReady = value;
+					OnPropertyChanged();
+				}
+			}
+		}
+
+
+		public void AddImagesToPage()
+		{
+			MainThread.BeginInvokeOnMainThread(async () =>
+			{
+				var horisontalStackLayout = new StackLayout
+				{
+					Orientation = StackOrientation.Horizontal,
+					BackgroundColor = new Color(255, 255, 255)
+				};
+				foreach (var row in _priorityMap)
+				{
+					var verticalStackLayout = new StackLayout
+					{
+						Orientation = StackOrientation.Vertical
+					};
+					foreach (var item in row)
+					{
+						var image = new Image
+						{
+							HeightRequest = 25,
+							WidthRequest = 25,
+							BindingContext = item
+						};
+						image.SetBinding(Image.SourceProperty, new Binding($"ValueString"));
+						verticalStackLayout.Children.Add(image);
+					}
+					horisontalStackLayout.Children.Add(verticalStackLayout);
+				}
+				_gamePage.Content = horisontalStackLayout;
+				MapReady = true;
+			});
+		}
+
+		public async Task GenerateImageArrayAsync()
+		{
+			Dispatcher.Dispatch(() =>
+			{
+				UpdatePriorityMap();
+			});
+		}
+
+		private void UpdatePriorityMap()
+		{
+			lock (lockCells)
+			{
+				for (int i = 0; i < _gameModelMap.GetLength(0); i++)
+				{
+					for (int j = 0; j < _gameModelMap.GetLength(1); j++)
+					{
+						if (EasyVisualisation(_gameModelMap[i, j]) != null)
+							_priorityMap[i][j].ValueString = EasyVisualisation(_gameModelMap[i, j]);
+						else
+							_priorityMap[i][j].ValueString = "square.png";
+					}
+				}
+			}
+		}
+	}
 }
