@@ -9,7 +9,7 @@
             MaxSatiety = 3;
             Saturability = 5;
             RadiusOfView = 20;
-            MaxSpeed = 2;
+            MaxSpeed = 1;
             YoungAge = 10;
         }
         public override Animals BorningChild() => new Cow();

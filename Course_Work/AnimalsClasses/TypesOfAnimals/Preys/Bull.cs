@@ -9,7 +9,7 @@
             MaxSatiety = 4;
             Saturability = 8;
             RadiusOfView = 20;
-            MaxSpeed = 2;
+            MaxSpeed = 1;
             YoungAge = 20;
         }
         public override Animals BorningChild() => new Bull();

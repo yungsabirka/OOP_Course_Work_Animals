@@ -32,7 +32,7 @@
         {
             var Factory = new FactoryOnBorningAnimals();
             Factory.SetFather((Animals)this);
-            Random chanceOfTwins = new Random();
+            Random chanceOfTwins = new();
             int numberOfChild;
 
             if (this is Predators || (this is Preys && chanceOfTwins.Next(0, 2) == 0))

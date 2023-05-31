@@ -6,7 +6,7 @@
         {
             SourceImage = "rabbit.png";
             Priority = 8;
-            MaxSpeed = 3;
+            MaxSpeed = 2;
             MaxSatiety = 1;
             Saturability = 2;
             RadiusOfView = 20;

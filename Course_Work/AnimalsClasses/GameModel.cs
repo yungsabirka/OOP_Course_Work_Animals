@@ -41,6 +41,8 @@ namespace OOPLAB
         }
         private void GenerateGrass(int amountOfGrass)
         {
+            while (amountOfGrass > map.GetLength(0) * map.GetLength(1))
+                amountOfGrass /= 2;
             for (int i = 0; i < amountOfGrass; i++)
             {
                 do

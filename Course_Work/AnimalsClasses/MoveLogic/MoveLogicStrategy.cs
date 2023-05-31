@@ -47,8 +47,7 @@ namespace OOPLAB
 
             ActionsOnMap.AddObject(newCoordinate, map, animal);
 
-            if (_concreteMoveLogic is not null)
-                _concreteMoveLogic.Move(map, animal);
+            _concreteMoveLogic?.Move(map, animal);
 
         }
     }

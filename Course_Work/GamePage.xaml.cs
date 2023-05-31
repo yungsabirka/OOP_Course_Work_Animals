@@ -15,7 +15,7 @@ namespace Course_Work
 		{
 			if (_gameModel == null)
 			{
-				_gameModel = new GameModel(5000, 10, 300);
+				_gameModel = new GameModel(10, 5, 300);
 				var simulation = new Simulation(_gameModel.map);
 				var visualisation = new Visualisation(_gameModel.map, this);
 				visualisation.AddImagesToPage();

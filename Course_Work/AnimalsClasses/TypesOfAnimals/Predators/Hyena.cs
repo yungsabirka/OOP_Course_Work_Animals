@@ -7,7 +7,7 @@
             SourceImage = "fox.png";
             Priority = 4;
             MaxSatiety = 20;
-            MaxSpeed = 3;
+            MaxSpeed = 2;
             RadiusOfView = 4;
             YoungAge = 18;
         }

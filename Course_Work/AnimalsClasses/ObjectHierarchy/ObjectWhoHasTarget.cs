@@ -21,18 +21,17 @@ namespace OOPLAB
                 coordinateDifferences =
                     new Point(-coordinateDifferences.X, -coordinateDifferences.Y);
             }
-            if (MaxSpeed < Math.Abs(coordinateDifferences.X))
-                newCoordinate.X = MaxSpeed * Math.Sign(coordinateDifferences.X);
-            else
-                newCoordinate.X = coordinateDifferences.X;
-            if (MaxSpeed < Math.Abs(coordinateDifferences.Y))
-                newCoordinate.Y = MaxSpeed * Math.Sign(coordinateDifferences.Y);
-            else
-                newCoordinate.Y = coordinateDifferences.Y;
-
+            newCoordinate =
+                new Point(CheckCoordinateDiferences(coordinateDifferences.X), 
+                CheckCoordinateDiferences(coordinateDifferences.Y));
             newCoordinate += new Size(Coordinate.X, Coordinate.Y);
 
             return newCoordinate;
         }
+
+        private int CheckCoordinateDiferences(int coordinateDifferences) =>
+            (MaxSpeed < Math.Abs(coordinateDifferences)) ?
+                MaxSpeed * Math.Sign(coordinateDifferences) : coordinateDifferences;
+
     }
 }
