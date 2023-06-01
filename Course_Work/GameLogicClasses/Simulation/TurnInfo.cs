@@ -9,6 +9,7 @@ public class TurnInfo
         get => _animalsCount = PredatorsCount + PreysCount;
         private set => _animalsCount = value;
     }
+    public int ChildPoopsCount { get; set; }
     public int PreysCount { get; set; }
     public int GrassEatenCount { get; set; }
     public int GrassGrowCount { get; set; }

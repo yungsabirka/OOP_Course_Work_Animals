@@ -8,6 +8,7 @@ namespace Course_Work
 		private int _grassAmount;
 		private int _preysAmount;
 		private int _predatorsAmount;
+		private int _stepsAmount;
 		public GamePage()
 		{
 			InitializeComponent();
@@ -16,15 +17,14 @@ namespace Course_Work
 		private async void StartGame(object sender, EventArgs e)
 		{
 			if(int.TryParse(entryGrass.Text, out _grassAmount) && int.TryParse(entryPredators.Text, out _predatorsAmount) 
-				&& int.TryParse(entryPreys.Text, out _preysAmount))
+				&& int.TryParse(entryPreys.Text, out _preysAmount) && int.TryParse(entrySteps.Text, out _stepsAmount))
 			{
 				if (_grassAmount > 0 && _predatorsAmount > 0 && _preysAmount > 0)
 				{
-
 					if (_gameModel is null)
 					{
 						_gameModel = new GameModel(_preysAmount, _predatorsAmount, _grassAmount);
-						var simulation = new Simulation(_gameModel.map);
+						var simulation = new Simulation(_gameModel.map, _stepsAmount);
 						var visualisation = new Visualisation(_gameModel.map, this);
 						visualisation.AddImagesToPage();
 						await Task.Run(async () =>
@@ -36,13 +36,10 @@ namespace Course_Work
 							simulation.Start(visualisation);
 						});
 						Content = AddGoStatisticButton(simulation.Statistics);
-
-                    }
-					
+                    }	
 				}
 
             }
-
 		}
 
 		private VerticalStackLayout AddGoStatisticButton(Statistics statistic)

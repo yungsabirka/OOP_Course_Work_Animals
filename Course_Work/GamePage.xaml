@@ -67,6 +67,28 @@
                 <Entry Placeholder = "..." FontFamily="Helvetica"
                 FontSize="22" MaxLength ="3" TextColor="black" x:Name="entryGrass" Keyboard="Numeric"/>
             </HorizontalStackLayout>
+            <HorizontalStackLayout
+                Spacing="15"
+                Margin="15"
+                Padding="15"
+                HorizontalOptions="Center">
+                <Image
+                    Source="steps.png"
+                    WidthRequest="50"
+                    HeightRequest="50">
+
+                </Image>
+                <Label
+                    HorizontalTextAlignment="Center"
+                    VerticalTextAlignment="Center"
+                    Text="Enter amount of steps:"
+                    TextColor="black"
+                    FontFamily="Helvetica"
+                    FontSize="22">
+                </Label>
+                <Entry Placeholder = "..." FontFamily="Helvetica"
+                FontSize="22" MaxLength ="3" TextColor="black" x:Name="entrySteps" Keyboard="Numeric"/>
+            </HorizontalStackLayout>
             <Button
                 x:Name="Start"
                 Clicked="StartGame"

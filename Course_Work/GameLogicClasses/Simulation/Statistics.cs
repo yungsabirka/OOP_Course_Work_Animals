@@ -35,6 +35,7 @@ public class Statistics : IEnumerable<TurnInfo>
         CountPredators();
         CountPreys();
         CountGrass();
+        CountChildPoops();
     }
     
     private int CountPredators()
@@ -49,6 +50,7 @@ public class Statistics : IEnumerable<TurnInfo>
                     this[TurnsCount-1].PredatorSpecietyCounter[animal.GetType()]++;
                     this[TurnsCount-1].PredatorsCount++;
                 }
+
             }
         }
 
@@ -78,12 +80,25 @@ public class Statistics : IEnumerable<TurnInfo>
         {
             foreach( var grass in cell)
             {
-                if (grass is Grass grassTemp)
+                if (grass is Grass grassObject)
                 {
-                    if (grassTemp.GrowRate < 10)
+                    if (grassObject.GrowRate < 10)
                         this[TurnsCount - 1].GrassEatenCount++;
-                    if (grassTemp.GrowRate == 10)
+                    if (grassObject.GrowRate == 10)
                         this[TurnsCount - 1].GrassGrowCount++;
+                }
+            }
+        }
+    }
+    private void CountChildPoops()
+    {
+        foreach (var cell in _map)
+        {
+            foreach (var grass in cell)
+            {
+                if (grass is ChildPoops)
+                {
+                    this[TurnsCount - 1].ChildPoopsCount++;
                 }
             }
         }

@@ -59,6 +59,7 @@
 	  <None Remove="Resources\Images\rabbit.svg" />
 	  <None Remove="Resources\Images\sheep.svg" />
 	  <None Remove="Resources\Images\square.svg" />
+	  <None Remove="Resources\Images\steps.svg" />
 	  <None Remove="Resources\Images\tiger.svg" />
 	  <None Remove="Resources\Images\tiger_image.svg" />
 	  <None Remove="Resources\Images\wolf.svg" />

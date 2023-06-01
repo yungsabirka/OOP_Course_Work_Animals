@@ -62,6 +62,7 @@ namespace OOPLAB
 				return cell.ToList()
 					.Where(item => item is not null)
 					.Select(item => (item.Priority, item.SourceImage)).Min().SourceImage;
+
 			}
         }
 

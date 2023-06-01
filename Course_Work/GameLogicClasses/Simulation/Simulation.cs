@@ -14,10 +14,10 @@ class Simulation
     public static int MaxTurns { get; private set; }
     private List<GameObject>[,] _map;
 
-    public Simulation(List<GameObject>[,] map)
+    public Simulation(List<GameObject>[,] map, int stepsAmount)
     {
         _delay = 200;
-        MaxTurns = 300;
+        MaxTurns = stepsAmount;
         Statistics = new Statistics(map);
         _map = map;
     }
@@ -26,16 +26,14 @@ class Simulation
     {
         while (Statistics.TurnsCount < MaxTurns)
         {
+            await visualisation.GeneratePriorityMap();
+            Thread.Sleep(_delay);
             lock (lockCells)
             {
                 Update.Invoke();
                 Move.Invoke(_map);
             }
-            Thread.Sleep(_delay);
-            await visualisation.GeneratePriorityMap();
-            /* Console.Clear();*/
             Statistics.RecordStatistics();
-            /*_statistics.Print();*/
         }
     }
 }
