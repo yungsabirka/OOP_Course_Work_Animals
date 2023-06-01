@@ -4,9 +4,6 @@
              x:Class="Course_Work.StatisticMenu"
              Title="StatisticMenu">
     <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+         
     </VerticalStackLayout>
 </ContentPage>

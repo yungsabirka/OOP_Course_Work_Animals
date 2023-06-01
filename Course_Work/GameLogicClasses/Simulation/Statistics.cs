@@ -3,7 +3,7 @@ using Course_Work;
 
 namespace OOPLAB;
 
-class Statistics : IEnumerable<TurnInfo>
+public class Statistics : IEnumerable<TurnInfo>
 {
     private readonly List<TurnInfo> _turnsCollection;
     public int TurnsCount { get; private set; }
@@ -34,6 +34,7 @@ class Statistics : IEnumerable<TurnInfo>
         this[TurnsCount - 1].TurnNumber = TurnsCount;
         CountPredators();
         CountPreys();
+        CountGrass();
     }
     
     private int CountPredators()
@@ -71,27 +72,21 @@ class Statistics : IEnumerable<TurnInfo>
 
         return this[TurnsCount-1].PreysCount;
     }
-
-    public bool ContainsPredatorCount(int count)
+    private void CountGrass()
     {
-        foreach (var turn in this)
+        foreach(var cell in _map)
         {
-            if (turn.PredatorsCount == count)
-                return true;
+            foreach( var grass in cell)
+            {
+                if (grass is Grass grassTemp)
+                {
+                    if (grassTemp.GrowRate < 10)
+                        this[TurnsCount - 1].GrassEatenCount++;
+                    if (grassTemp.GrowRate == 10)
+                        this[TurnsCount - 1].GrassGrowCount++;
+                }
+            }
         }
-
-        return false;
-    }
-    
-    public bool ContainsPreyCount(int count)
-    {
-        foreach (var turn in this)
-        {
-            if (turn.PreysCount == count)
-                return true;
-        }
-
-        return false;
     }
     
 }

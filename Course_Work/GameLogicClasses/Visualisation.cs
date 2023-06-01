@@ -57,12 +57,13 @@ namespace OOPLAB
 		{
 			lock (lockCells)
 			{
-                if (cell.Count == 0)
+				if (cell.Count == 0 || cell is null)
 					return null;
 				return cell.ToList()
-					.Select(item => Tuple.Create(item.Priority, item.SourceImage)).Min().Item2;
+					.Where(item => item is not null)
+					.Select(item => (item.Priority, item.SourceImage)).Min().SourceImage;
 			}
-		}
+        }
 
 
 
@@ -70,7 +71,10 @@ namespace OOPLAB
 		{
 			MainThread.BeginInvokeOnMainThread(async () =>
 			{
-				var scrollView = new ScrollView();
+				var scrollView = new ScrollView
+				{
+					BackgroundColor = new Color(0, 0, 0)
+				};
 				var horisontalStackLayout = new StackLayout
 				{
 					Orientation = StackOrientation.Horizontal,
