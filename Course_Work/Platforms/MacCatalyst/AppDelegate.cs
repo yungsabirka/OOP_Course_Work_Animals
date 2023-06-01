@@ -1,4 +1,5 @@
-﻿using Foundation;
+﻿using Course_Work.Pages;
+using Foundation;
 
 namespace Course_Work;
 

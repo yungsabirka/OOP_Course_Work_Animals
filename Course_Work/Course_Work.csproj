@@ -70,7 +70,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="GamePage.xaml">
+	  <MauiXaml Update="Pages\GamePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\StatisticMenu.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="StatisticMenu.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
