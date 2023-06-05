@@ -9,6 +9,7 @@ class Simulation
     public static event Action? Update;
     public delegate void AnimalsMove(List<GameObject>[,] map);
     public static event AnimalsMove? Move;
+    public bool isSimulationContinuing = true;
     private readonly int _delay;
     object lockCells = new();
     public static int MaxTurns { get; private set; }
@@ -24,7 +25,7 @@ class Simulation
 
     public async void Start(Visualisation visualisation)
     {
-        while (Statistics.TurnsCount < MaxTurns)
+        while (Statistics.TurnsCount < MaxTurns && isSimulationContinuing)
         {
             await visualisation.GeneratePriorityMap();
             Thread.Sleep(_delay);

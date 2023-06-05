@@ -6,7 +6,7 @@ namespace OOPLAB
     class GameModel
     {
         public List<GameObject>[,] map;
-        private int _mapLenght;
+        private readonly int _mapLenght;
         private Random _random = new();
         private int _rowNumber;
         private int _columnNumber;

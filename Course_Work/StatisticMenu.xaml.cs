@@ -2,8 +2,8 @@ namespace Course_Work;
 using OOPLAB;
 public partial class StatisticMenu : ContentPage
 {
-	private int _scaleY = 300;
-	private int _scaleX = 400;
+	private readonly int _scaleY = 300;
+	private readonly int _scaleX = 400;
 	public StatisticMenu(Statistics statistic)
 	{
 		InitializeComponent();

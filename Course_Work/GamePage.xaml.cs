@@ -25,8 +25,8 @@ namespace Course_Work
 					{
 						_gameModel = new GameModel(_preysAmount, _predatorsAmount, _grassAmount);
 						var simulation = new Simulation(_gameModel.map, _stepsAmount);
-						var visualisation = new Visualisation(_gameModel.map, this);
-						visualisation.AddImagesToPage();
+						var visualisation = new Visualisation(_gameModel.map, this, simulation);
+						visualisation.CreateVisualisationPage();
 						await Task.Run(async () =>
 						{
 							while (!visualisation.MapReady)
@@ -35,37 +35,10 @@ namespace Course_Work
 							}
 							simulation.Start(visualisation);
 						});
-						Content = AddGoStatisticButton(simulation.Statistics);
                     }	
 				}
 
             }
 		}
-
-		private VerticalStackLayout AddGoStatisticButton(Statistics statistic)
-		{
-			var verticalContainer = new VerticalStackLayout
-			{
-				BackgroundColor = new Color(0, 0, 0),
-				VerticalOptions = LayoutOptions.Center,
-				HorizontalOptions = LayoutOptions.Center,
-			};
-			var buttonToStatistic = new Button
-			{
-				BackgroundColor = new Color(255,255,255),
-				Text = "Go to statistic",
-				VerticalOptions = LayoutOptions.Center,
-				HorizontalOptions= LayoutOptions.Center,
-				TextColor = new Color(0,0,0),
-				WidthRequest = 200,
-			};
-			buttonToStatistic.Clicked += (senter, e) =>
-			{
-                Navigation.PushAsync(new StatisticMenu(statistic));
-            };
-			verticalContainer.Add(buttonToStatistic);
-			return verticalContainer;
-        }
-
 	}
 }

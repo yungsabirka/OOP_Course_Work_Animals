@@ -11,6 +11,7 @@ namespace OOPLAB
 		private readonly GamePage _gamePage;
         object lockCells = new();
         private bool _mapReady;
+		private Simulation _simulation;
         public bool MapReady
         {
             get
@@ -26,8 +27,9 @@ namespace OOPLAB
                 }
             }
         }
-        public Visualisation(List<GameObject>[,] gameModel, GamePage gamePage)
+        public Visualisation(List<GameObject>[,] gameModel, GamePage gamePage, Simulation simulation)
         {
+			_simulation = simulation;
             _gamePage = gamePage;
             _gameModelMap = gameModel;
             _priorityMap = new ObservableCollection<ObservableCollection<MyString>>();
@@ -51,8 +53,6 @@ namespace OOPLAB
 				}
 			}
 		}
-
-
 		private string GetPriorityItem(List<GameObject> cell)
 		{
 			lock (lockCells)
@@ -65,29 +65,28 @@ namespace OOPLAB
 
 			}
         }
-
-
-
-		public void AddImagesToPage()
+		public void CreateVisualisationPage()
 		{
 			MainThread.BeginInvokeOnMainThread(async () =>
 			{
+				var buttonContainer = AddButtonsToContainer();
 				var scrollView = new ScrollView
 				{
 					BackgroundColor = new Color(0, 0, 0)
 				};
-				var horisontalStackLayout = new StackLayout
+				var verticalStackLayout = new StackLayout
 				{
-					Orientation = StackOrientation.Horizontal,
+					Orientation = StackOrientation.Vertical,
 					BackgroundColor = new Color(255, 255, 255),
 					HorizontalOptions = LayoutOptions.Center
 				};
+				verticalStackLayout.Children.Add(buttonContainer);
 				foreach (var row in _priorityMap)
 				{
-					var verticalStackLayout = new StackLayout
+					var horisontalStackLayout = new StackLayout
 					{
-						Orientation = StackOrientation.Vertical
-					};
+						Orientation = StackOrientation.Horizontal
+                    };
 					foreach (var item in row)
 					{
 						var image = new Image
@@ -97,17 +96,89 @@ namespace OOPLAB
 							BindingContext = item
 						};
 						image.SetBinding(Image.SourceProperty, new Binding($"ValueString"));
-						verticalStackLayout.Children.Add(image);
+						horisontalStackLayout.Children.Add(image);
 					}
-					horisontalStackLayout.Children.Add(verticalStackLayout);
+					verticalStackLayout.Children.Add(horisontalStackLayout);
 				}
-				scrollView.Content = horisontalStackLayout;
+				scrollView.Content = verticalStackLayout;
 				_gamePage.Content = scrollView;
 				MapReady = true;
 			});
 		}
+        private HorizontalStackLayout AddButtonsToContainer()
+        {
+            var horisontalContainer = new HorizontalStackLayout
+            {
+                BackgroundColor = new Color(255, 255, 255),
+                VerticalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.Center,
+				Spacing = 10
+            };
+			var stopButton = CreateStopButton();
+			var statisticButton = CreateGoToStatisticButton();
+            horisontalContainer.Add(stopButton);
+			horisontalContainer.Add(statisticButton);
+            return horisontalContainer;
+        }
+		private Button CreateGoToStatisticButton()
+		{
+            var goToStatisticButton = new Button
+            {
+                BackgroundColor = new Color(50, 170, 255),
+                Text = "Go to statistic",
+                VerticalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.Center,
+                TextColor = new Color(255, 255, 255),
+                WidthRequest = 200,
+            };
+			goToStatisticButton.Clicked += (senter, e) =>
+			{
+				if (_simulation.isSimulationContinuing)
+					_simulation.isSimulationContinuing = false;
+                    lock (lockCells)
+                    {
+                        MainThread.BeginInvokeOnMainThread(() =>
+                            _gamePage.Navigation.PushAsync(new StatisticMenu(_simulation.Statistics)));
+                    }
+            };
 
-		public async Task GeneratePriorityMap()
+            return goToStatisticButton;
+        }
+		private Button CreateStopButton()
+		{
+            var stopButton = new Button
+            {
+                BackgroundColor = new Color(50, 170, 255),
+                Text = "Stop",
+                VerticalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.Center,
+                TextColor = new Color(255, 255, 255),
+                WidthRequest = 200,
+            };
+            stopButton.Clicked += async (senter, e) =>
+            {
+                if (_simulation.isSimulationContinuing)
+                {
+                    _simulation.isSimulationContinuing = false;
+                    stopButton.Background = new Color(255, 170, 50);
+                    stopButton.Text = "Continue";
+                }
+                else
+                {
+                    _simulation.isSimulationContinuing = true;
+					stopButton.Background = new Color(50, 170, 255);
+                    stopButton.Text = "Stop";
+                    await Task.Run(() =>
+                    {
+                        _simulation.Start(this);
+                    });
+
+                }
+            };
+			return stopButton;
+        }
+
+        public async Task GeneratePriorityMap()
 		{
 			Dispatcher.Dispatch(() =>
 			{
